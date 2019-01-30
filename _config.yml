@@ -9,7 +9,7 @@ tagline:             'Tech, life and thoughts'
 description:         'Hưng Đào homepage and blog about tech, side projects, thoughts and life updates'
 url:                 https://zocoi.com
 baseurl:             ''
-paginate:            5
+paginate:            10
 
 include             : ["_pages"]
 
