@@ -1,0 +1,50 @@
+---
+layout: post
+title: Shareable Resource - Pay attention
+date: 2010-09-29 15:17:46.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Web Development
+tags:
+- Django
+- Python
+- Resource
+- server
+- Share
+- Socket
+meta:
+  _syntaxhighlighter_encoded: '1'
+  _sexybookmarks_permaHash: 5aaba04cbfa56c2382c09db1f96ad849
+  _sexybookmarks_shortUrl: http://b2l.me/avk3j8
+  _wp_old_slug: ''
+  _edit_last: '2'
+  reddit: a:2:{s:5:"count";s:1:"0";s:4:"time";s:10:"1330566483";}
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<div>
+<p>I have a chance to work with the system, consists of two separate servers , both using  Django. The server can communicate with each other via socket. However, the problem with socket is that it is not easy to send the big data and retain different resources. Commonly, the two servers need to share a common resource, usually the database. It is not effective to maintain the local database in each server and replicate the data between them whenever there is certain change to the server.</p>
+<p>Everything seems to work, server A and B communicate via server, and both access to the same database (in my case it is using MySQL database) ... but then a bug emerges ...</p>
+<p>The server A creates some data and save it to the database, using Django ORM, and send a request to the server B telling B to process the data server A just saves to database. Server B gets the request and needed information to process the data the server A saved to the database. The problem is server B cannot find the data server A just saved. What is going on???</p>
+<p><!--more--></p>
+<p>My first suspect is that when server A saves the data, it might take a little time to MySQL to save it, so before data is actually stored to db, server B gets the request and cannot find it. But this is not true, when the error also come after 30 seconds ... It cannot be that saving data to database takes more than 30 seconds.</p>
+<p>Then I suspect the cache of Django ORM, it is possible that the Django ORM retains its own cache, it retrieves data without really hit the database, and only refresh after a certain time. But then I find out that Django ORM does not really have any caching mechanism at all. But when I tried to use direct access to MySQL, the data can be found. So what is going on?</p>
+<p>The problem is due to a thing I never thought of. The cache of MySQL database. The scenario is as followed, to save the time, usually a server retain a certain connection (session) to the database server when requesting multiple queries in its life span. It is not efficient to create and close the connection when making connection for each query. Server A retain a connection (session) to MySQL server, writing or reading data has no problem at all. In the same meaning, the server B also retains the same connection with MySQL server. Even after the server A saves the data, MySQL server still not updates or reflects the new data to the connection made and retained by B. This is due to the cache set up in MySQL database. That's why server B cannot find the database made by A. So we know the reason, how can we solve the problem? Two options</p>
+<p>1. Disable the cache in MySQL, usually this is not the good option since the cache will improve significantly the performance of MySQL and usually we don't have root access to MySQL db at all</p>
+<p>2. Easier one and feasible one, restart the connection to database before processing new request sent from server A. It is a bit less efficient, but it's working properly. The problem is how to reset the connection to db in Django ORM. Django ORM in fact dos not support any method to reset the db connection. Finally I found the trick to do that.</p>
+<p>[code]<br />
+from django.db import connection<br />
+connection.close()<br />
+[/code]</p>
+<p>This is not actually reseting the connection to db, but in fact close it. However, when you make a new query by Django ORM, the connection will be created again when it is seeing that the connection is closed before, it turns out a way to reset the db connection.</p>
+<p><strong>Conclusion</strong></p>
+<p>Even though this happens in the case the server is using Django framework in Python. But the problem might happen to other platforms as well. There are many chances you see the system with different servers access or share the same resource. Pay attention and make sure that the resource reflect the change effectively and the server can always obtain the latest state, without cache or delay in storing data. Otherwise, it can happens in a way that the server B lost the data or mis-used the data saved by other servers.</p>
+</div>

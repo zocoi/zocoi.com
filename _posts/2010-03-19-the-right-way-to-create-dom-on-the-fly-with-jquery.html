@@ -1,0 +1,119 @@
+---
+layout: post
+title: The right way to create DOM on the fly with jQuery
+date: 2010-03-19 16:59:34.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Misc
+tags:
+- dom
+- javascript
+- jquery
+- jquery 1.4
+meta:
+  _wpas_done_fb: '1'
+  _wpas_done_twitter: '1'
+  geo_public: '1'
+  geo_address: '00180 Helsinki, Suomi'
+  geo_accuracy: '222'
+  geo_longitude: '24.908319'
+  _edit_last: '1393113'
+  geo_latitude: '60.164736'
+  _wp_old_slug: the-right-way-to-create-new-dom-on-the-fly-with-jquery
+  delicious: a:3:{s:5:"count";s:1:"0";s:9:"post_tags";s:0:"";s:4:"time";s:10:"1312255084";}
+  reddit: a:2:{s:5:"count";i:0;s:4:"time";i:1422551070;}
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>I was reviewing the source code of a project when I realized that it was painful to create DOM on the fly while retaining the human-readable syntax. However, it is now improved thanks to the new API from jQuery 1.4</p>
+<p><!--more--></p>
+<p>In my simple example, I was trying to create a dynamic table row and add it to a table. The ultimate goal is to create those HTML elements</p>
+<p>[sourcecode language="html"]<br />
+&lt;table&gt;<br />
+  &lt;tr&gt;<br />
+    &lt;td&gt;foobar&lt;/td&gt;<br />
+    &lt;td&gt;<br />
+      &lt;input type=&quot;text&quot; value=&quot;foobar&quot; name=&quot;rule[properties][foobar]&quot;&gt;<br />
+    &lt;/td&gt;<br />
+    &lt;td&gt;<br />
+      &lt;input type=&quot;checkbox&quot; value=&quot;1&quot; name=&quot;rule[important][foobar]&quot;&gt;<br />
+    &lt;/td&gt;<br />
+    &lt;td style=&quot;text-align: right;&quot;&gt;<br />
+      &lt;img title=&quot;remove&quot; alt=&quot;remove&quot; src=&quot;/buttons/pane_button_remove.png&quot;&gt;<br />
+    &lt;/td&gt;<br />
+  &lt;/tr&gt;<br />
+&lt;/table&gt;<br />
+[/sourcecode]</p>
+<p>The old code was:</p>
+<p>[sourcecode language="javascript"]<br />
+var row = jQuery(&quot;&lt;tr /&gt;&quot;)<br />
+ .appendTo(&quot;table&quot;);</p>
+<p>jQuery(&quot;&lt;td /&gt;&quot;)<br />
+  .text(name)<br />
+  .appendTo(row);<br />
+var valueCell = jQuery(&quot;&lt;td /&gt;&quot;)<br />
+  .appendTo(row);<br />
+jQuery(&quot;&lt;input /&gt;&quot;)<br />
+  .attr({<br />
+    type: &quot;text&quot;,<br />
+    name: &quot;rule[properties][&quot; + name + &quot;]&quot;<br />
+  })<br />
+  .val(value)<br />
+  .appendTo(valueCell);<br />
+jQuery(&quot;&lt;img /&gt;&quot;)<br />
+  .attr({<br />
+    src: &quot;button_close.png&quot;,<br />
+    alt: &quot;remove&quot;<br />
+  })<br />
+  .click(function(e) {<br />
+    jQuery(this).closest(&quot;tr&quot;).remove();<br />
+  })<br />
+  .appendTo(valueCell);<br />
+[/sourcecode]</p>
+<p>I bet the above code is too long and messy that you almost dont want to read it, right? How about the below one?</p>
+<p>[sourcecode language="javascript"]<br />
+  jQuery(&quot;&lt;tr /&gt;&quot;)<br />
+    .append(<br />
+      jQuery(&quot;&lt;td /&gt;&quot;, {<br />
+        text: name<br />
+      })<br />
+    )<br />
+   .append(<br />
+      jQuery(&quot;&lt;td /&gt;&quot;, {<br />
+        html: jQuery(&quot;&lt;input /&gt;&quot;, {<br />
+                &quot;type&quot;: &quot;text&quot;,<br />
+                &quot;name&quot;: &quot;rule[properties][&quot; + name + &quot;]&quot;,<br />
+                val: value<br />
+              })<br />
+      })<br />
+    )<br />
+    .append(<br />
+      jQuery(&quot;&lt;td /&gt;&quot;, {<br />
+        html: jQuery(&quot;&lt;input /&gt;&quot;, {<br />
+                &quot;type&quot;: &quot;checkbox&quot;,<br />
+                &quot;name&quot;: &quot;rule[important][&quot; + name + &quot;]&quot;,<br />
+                &quot;checked&quot;: isImportant<br />
+              })<br />
+      })<br />
+    )<br />
+    .append(<br />
+      jQuery(&quot;&lt;td /&gt;&quot;, {<br />
+        &quot;style&quot;: &quot;text-align: right;&quot;,<br />
+        html: jQuery(&quot;&lt;img /&gt;&quot;, {<br />
+                &quot;src&quot;: &quot;/buttons/pane_button_remove.png&quot;,<br />
+                click: function() { jQuery(this).closest(&quot;tr&quot;).remove(); }<br />
+              })<br />
+      })<br />
+    )<br />
+    .appendTo(&quot;table&quot;);<br />
+[/sourcecode]</p>
+<p>The two approach of creating DOM on the fly produce the same HTML code to the document. However, the second one seems to be more human-readable. It also mimics the semantic syntax of HTML so it is much easier to maintain thanks to the <a href="http://api.jquery.com/jQuery/#jQuery2" target="_blank">new API in jQuery 1.4</a></p>
+<p>Do you have any better idea about creating DOM without using a plugin? Share it with me.</p>

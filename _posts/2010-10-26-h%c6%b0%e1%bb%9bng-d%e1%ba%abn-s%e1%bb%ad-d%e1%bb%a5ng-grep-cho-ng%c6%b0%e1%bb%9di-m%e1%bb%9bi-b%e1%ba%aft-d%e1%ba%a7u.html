@@ -1,0 +1,43 @@
+---
+layout: post
+title: Hướng dẫn sử dụng grep cho người mới bắt đầu
+date: 2010-10-26 18:03:35.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Web Development
+tags: []
+meta:
+  _sexybookmarks_shortUrl: http://bit.ly/hgDqVu
+  _sexybookmarks_permaHash: e770967aa3e7e9797965f60ae29caa54
+  _edit_last: '2'
+  _syntaxhighlighter_encoded: '1'
+  _wp_old_slug: ''
+  reddit: a:2:{s:5:"count";s:1:"0";s:4:"time";s:10:"1330583701";}
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>Grep là công cụ cơ bản trong linux/unix dùng để tìm kiếm từ khoá trong file hoặc từ input. Ngoài grep ra còn có egrep giống như grep -E, rgrep giống như grep -r và fgrep giống như grep -F.</p>
+<p>Dưới đây là vài ví dụ đơn giản có thể dùng hàng ngày</p>
+<p>1. Tìm từ khoá keyword trong tất cả các file trong thư mục hiện thời và hiện đường dẫn của file đó<br />
+[code lang="bash"]<br />
+grep -H -r &quot;keyword&quot; *<br />
+[/code]</p>
+<p>2. Tìm từ khoá kết hợp output từ lệnh khác<br />
+[code lang="bash"]<br />
+cat filename | grep 'something'<br />
+cat /proc/cpuinfo | grep -i 'Model'<br />
+[/code]</p>
+<p>3. Đếm số kết quả tìm được<br />
+[code lang="bash"]<br />
+$ grep -c false /etc/passwd<br />
+7<br />
+[/code]</p>
+<p>grep là công cụ rất nhanh và hữu ích. Hãy tìm hiểu thêm <a href="http://unixhelp.ed.ac.uk/CGI/man-cgi?grep">ở đây</a> hoặc gõ "man grep" trong terminal. Chúc bạn thành công.</p>

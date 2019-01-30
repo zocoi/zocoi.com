@@ -1,0 +1,31 @@
+---
+layout: post
+title: Imagemagick convert pdf to images with high quality
+date: 2012-01-11 11:08:34.000000000 -08:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Misc
+tags:
+- imagemagick
+- rmagick
+meta:
+  _edit_last: '1393113'
+  publicize_results: a:2:{s:7:"twitter";a:1:{i:19440333;a:2:{s:7:"user_id";s:5:"zocoi";s:7:"post_id";s:18:"157026103377137665";}}s:2:"fb";a:1:{i:560224923;a:2:{s:7:"user_id";s:9:"560224923";s:7:"post_id";s:17:"10150598250559924";}}}
+  _wpas_done_twitter: '1'
+  _wpas_done_fb: '1'
+  reddit: a:2:{s:5:"count";s:1:"0";s:4:"time";s:10:"1330828576";}
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>This is called  supersampling technique. You set the density, say 4 times larger than nominal (72 dpi), thus -density 288 before reading the pdf. Then after reading it, you resize down by a factor of 4 or 25%<br />
+[code]<br />
+convert -density 288 image.pdf -resize 25% resultimage.png<br />
+[/code]</p>

@@ -1,0 +1,47 @@
+---
+layout: post
+title: Architecture Model of Chrome Extension
+date: 2010-09-22 14:57:54.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Web Development
+tags:
+- Architecture
+- Chrome Extension
+meta:
+  _edit_last: '2'
+  _sexybookmarks_shortUrl: http://b2l.me/attreq
+  _wp_old_slug: ''
+  _sexybookmarks_permaHash: 3b74c12a09ff4a00df571d8c555d8747
+  reddit: a:2:{s:5:"count";i:0;s:4:"time";i:1422550316;}
+  _oembed_b4851c806e0b715a62def2f4c1dd7224: "{{unknown}}"
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<div>
+<div>
+<p>When I first came to Chrome extension development, it seems quite easy to me since it uses the familiar concepts in Web Development. It is written in JavaScript with UI in HTML and CSS. The only thing new is the manifest.json file which is used to define the basic properties and configurations of the extension. However, when going deeper, I encountered a lot of problems due to the confusions in the architecture. It seems to look like a normal Web development but actually it is not. It is totally different. So I hope this post will clear you out a little bit, avoid the confusions and have a better concepts in Chrome extension development.</p>
+<p><!--more--></p>
+<p>The post assumes that you have a basic knowledge in Chrome extension development, if not check it out here <a href="http://code.google.com/chrome/extensions/getstarted.html">http://code.google.com/chrome/extensions/getstarted.html</a></p>
+<p>In the manifest json file, there might be two properties definitions for <strong>background-page</strong> and <strong>content-script</strong>. These properties are the most common used in the manifest file of Chrome extensions. They are also the most important entities to understand the architecture model of Chrome extension. Remind a bit about Chrome browser, in Chrome we can open many tabs as we want, but the extension is always stayed on top of those. The extension is like a small program sitting on top of the tabs and no matter how many tabs we open, there is only one instance of extension running and executing.</p>
+<p>So what is the background page? I’m not surprised if you might think it is the page for displaying the background of the extension :) ... In fact, background page, which is named as a page, a page should contains the UI elements and is meant for displaying, but in this case the background page usually does not contain any UI elements. It is written HTML, Javascript, CSS and the file structure is exactly like any .html files, but it usually contains code in Javascript block. However, this file can access to a range of API provided by Chrome such as tabs, browser, bookmarks, events, history, window .etc... and everything is certainly written in Javascript.</p>
+<p>Background page is like the many entry script of the extension, executed when the extension is started and no matter how many tabs we open, there is only one single instance of background page is created, spanned over the extension life time. In contrast, the content script is a the script executed whenever the page is loaded or the new tab is opened. The content script page is just a normal Javascript file. Even though the content script is executed every time a page is reloaded or opened, content script cannot access anything (objects, data, variables) in the page script (the script comes from the page) but the DOM elements. Let think at this way, content script is executed in parallel with the page script but it is executed in a special, isolated environment with page. In that way, the content script cannot potentially modify any important data or break the page script. However, the content script has the full access to the DOM elements in the page. This open the ability that the extension we created can control the view, the look of the page without unintentionally break the page script. If the extension needs communicate with the page script, that can be done by writing the data to a certain DOM element that both knows. This thing gave me a lot of confusions when I see that I could access the DOM elements but cannot access any data in the page script.</p>
+<p style="text-align:center;"><a href="http://www.webtech.vn/wp-content/uploads/2010/09/chrome_model3.png"><img class="aligncenter size-full wp-image-387" title="chrome_model" src="{{ site.baseurl }}/assets/chrome_model3.png" alt="" width="554" height="270" /></a></p>
+<p style="text-align:center;">
+<p style="text-align:center;">
+<p style="text-align:center;">The architecture model of Chrome extension</p>
+<p>Now back to the background page and content script. The background can access to mostly many properties of the browser such as history, bookmark ..etc... but cannot access the user page nor the content script. However, the background page can make a call to execute the methods inside the content script and if the content script want to access the data in the background page, it has to make the request to the background page via method<br />
+chrome.extension.sendRequest. The background page on the other hand can make any cross site requests but the content script cannot due to the security of cross site scripting. The only options for content script is to make the request with JSONP to a service or make the request to the background page to make the request to the required service.</p>
+<p>To summarise things, if your extension is communicating with a certain Web services or APIs. That has to be done in the background page. If the extension wants to modify the view of user page, it must send request or execute the method defined in content script then the content script will access the DOM elements and modify the view accordingly. If the extension wishes to receive some data from the user page, then it has to be done in the content script and the content script will send the data to background page via the Chrome extension request. Finally note that the background has only one instances over many tabs or page, but the content script is created new on new page reloaded or open.</p>
+<p><strong>Conclusion</strong><br />
+Chrome extension is a good API provided by Chrome browser, helps us writing more useful applications that can run directly inside the browser. The API does not require much knowledge beside Javascript. However, things might come too difficult to debug or development if you don’t understand the whole architecture model behind it. I hope this post helped you clear that out.</p>
+</div>
+</div>

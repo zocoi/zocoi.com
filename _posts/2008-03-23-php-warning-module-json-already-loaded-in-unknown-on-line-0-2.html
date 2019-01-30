@@ -1,0 +1,32 @@
+---
+layout: post
+title: 'PHP Warning: Module ''json'' already loaded in Unknown on line 0'
+date: 2008-03-23 20:24:05.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Web Development
+tags: []
+meta:
+  _syntaxhighlighter_encoded: '1'
+  delicious: s:85:"s:77:"s:69:"a:3:{s:5:"count";i:0;s:9:"post_tags";s:0:"";s:4:"time";i:1218488885;}";";";
+  reddit: s:62:"s:54:"s:46:"a:2:{s:5:"count";i:0;s:4:"time";i:1218488887;}";";";
+  _edit_last: '2'
+  _sexybookmarks_shortUrl: http://b2l.me/8c42y
+  _sexybookmarks_permaHash: 53cb2b57ce5c9698fb8d8b33b632e121
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>"PHP Warning: Module *** already loaded" seems to be a very common warning for freshly installed PHP. If you happen to see the example below here then this post may help you</p>
+<p>[code]PHP Warning:  Module 'json' already loaded in Unknown on line 0[/code]</p>
+<p>In this case, the reason may be that the modules json is loaded twice, look into the php.ini files and find this line and comment it out with a comma</p>
+<p>[code];extension=json.so[/code]</p>
+<p>Don't forget to look into both /etc/php5/cli and /etc/php5/apache2 if the warning appears both in your command line and web server.</p>
+<p>There is a chance that you have installed the php5-json package in your Linux system and it also enable the extension somewhere in a config file therefore the duplication occurs. I would recommend to use the package from your distro repositories to make sure that everything is up to date.</p>

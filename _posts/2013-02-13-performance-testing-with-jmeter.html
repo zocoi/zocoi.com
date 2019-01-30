@@ -1,0 +1,48 @@
+---
+layout: post
+title: "[Log] Performance testing with JMeter"
+date: 2013-02-13 21:30:47.000000000 -08:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Misc
+tags: []
+meta:
+  _edit_last: '1393113'
+  geo_longitude: "-122.422664"
+  geo_latitude: '37.777727'
+  geo_accuracy: '20'
+  geo_address: 357-399 Grove Street, San Francisco, CA 94102, USA
+  geo_public: '1'
+  _publicize_pending: '1'
+  _publicize_done_external: a:1:{s:8:"facebook";a:1:{i:560224923;b:1;}}
+  _wpas_done_1907398: '1'
+  publicize_twitter_user: zocoi
+  _wpas_done_31552: '1'
+  _wpas_skip_1907398: '1'
+  _wpas_skip_31552: '1'
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>I've always been curious about our web service performance. My first attempts to measure the server capacity was to generate a system load manually:</p>
+<p>1. Generate disk IO operations - Copy large files from place to place. E.g Create a 10GB file</p>
+<p>[sourcecode]dd if=/dev/zero of=10g.img bs=1000 count=0 seek=$[1000*1000*10][/sourcecode]</p>
+<p>2. Generate netword load - Download or upload large files</p>
+<p>3. Generate both CPU utilization and disk IO</p>
+<p>[sourcecode]dd if=/dev/zero of=/dev/null[/sourcecode]<br />
+[sourcecode]fulload() { dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null &amp; }; fulload; read; killall dd[/sourcecode]</p>
+<p>And monitor the load when running the above scripts. This method can help analyzing the alarm threshold where the system should page someone once the threshold is met. However unless sophisticated scripts are written, running those repeatably can be tiring. This is where JMeter comes to rescue.</p>
+<p>Next step is to actually test the app with JMeter. Since the web app is composed of mostly JSON APIs. I created a test plan hitting several APIs with GET/POST requests</p>
+<p>Below are sample results of 10 threads and 1000 loop count hitting an API</p>
+<p><a href="http://vnese.files.wordpress.com/2013/02/screen-shot-2013-02-11-at-3-07-00-pm.png"><img class="aligncenter size-full wp-image-1004" alt="Screen Shot 2013-02-11 at 3.07.00 PM" src="{{ site.baseurl }}/assets/screen-shot-2013-02-11-at-3-07-00-pm.png" width="319" height="435" /></a><a href="http://vnese.files.wordpress.com/2013/02/screen-shot-2013-02-11-at-3-05-59-pm-1.png"><img class="aligncenter size-full wp-image-1005" alt="Screen Shot 2013-02-11 at 3.05.59 PM 1" src="{{ site.baseurl }}/assets/screen-shot-2013-02-11-at-3-05-59-pm-1.png" width="628" height="25" /></a></p>
+<p><a href="http://vnese.files.wordpress.com/2013/02/aaaa.png"><img class="aligncenter size-full wp-image-1021" alt="aaaa" src="{{ site.baseurl }}/assets/aaaa.png" width="628" height="406" /></a></p>
+<p><strong>Interpreting the results</strong></p>
+<p>In Graph results, Data legend showed us a scattered points of response time while Median value showed us approximately steady response time over time. I assume I can use mean or median response time to estimate how fast the server responds to concurrent requests.</p>
+<p>In combination of server resources monitoring, we can measure the point where bottlenecks appears by simply increasing the number of threads in intervals 100, 150, 200, 500... For example, at a point when there is a socket handup, if there is enough memory, we can increase accordingly the number of node in the app cluster.</p>

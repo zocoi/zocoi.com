@@ -1,0 +1,66 @@
+---
+layout: post
+title: A bug in WebKit which can not render outline for a table
+date: 2010-03-11 12:56:31.000000000 -08:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Browser Bugs
+tags: []
+meta:
+  _edit_last: '1393113'
+  delicious: a:3:{s:5:"count";s:1:"0";s:9:"post_tags";s:0:"";s:4:"time";s:10:"1269034722";}
+  reddit: s:55:"a:2:{s:5:"count";s:1:"0";s:4:"time";s:10:"1268733326";}";
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>The bug is simple. I can not apply an outline to a table. Below is the code I used to test in Chrome and Safari:</p>
+<p>[sourcecode language="html"]<br />
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;<br />
+&lt;html&gt;<br />
+&lt;head&gt;<br />
+&lt;style type=&quot;text/css&quot;&gt;<br />
+table<br />
+{<br />
+  border: thin solid green;<br />
+  outline: thick dotted red;<br />
+}<br />
+&lt;/style&gt;<br />
+&lt;/head&gt;<br />
+&lt;body&gt;</p>
+<p>&lt;table&gt;<br />
+  &lt;tr&gt;<br />
+    &lt;td&gt;Cell 1&lt;/td&gt;<br />
+    &lt;td&gt;Cell 2&lt;/td&gt;<br />
+  &lt;/tr&gt;<br />
+  &lt;tr&gt;<br />
+    &lt;td&gt;Cell 3&lt;/td&gt;<br />
+    &lt;td&gt;Cell 4&lt;/td&gt;<br />
+  &lt;/tr&gt;<br />
+&lt;/table&gt;</p>
+<p>&lt;/body&gt;<br />
+&lt;/html&gt;<br />
+[/sourcecode]</p>
+<p>In Firefox, you can see the outline drawn starting just outside the border edge. But in Chrome/Safari, you can only see the border.</p>
+<table>
+<tr>
+<td>Firefox</td>
+<td>Chrome</td>
+</tr>
+<tr>
+<td>
+<a href="http://vnese.files.wordpress.com/2010/03/screen.png"><img class="alignleft size-full wp-image-169" title="screen-from-firefox" src="{{ site.baseurl }}/assets/screen.png" alt="" width="118" height="122" /></a>
+</td>
+<td>
+<a href="http://vnese.files.wordpress.com/2010/03/screen2.png"><img class="size-full wp-image-170 alignleft" title="screen-from-chrome" src="{{ site.baseurl }}/assets/screen2.png" alt="" width="110" height="105" /></a>
+</td>
+</tr>
+</table>
+<p>Wordaround: N/A</p>

@@ -1,0 +1,64 @@
+---
+layout: post
+title: Detecting browsers javascript hacks in a tweet
+date: 2009-02-15 00:25:57.000000000 -08:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Misc
+tags: []
+meta:
+  _edit_last: '1393113'
+  delicious: s:78:"a:3:{s:5:"count";s:1:"0";s:9:"post_tags";s:0:"";s:4:"time";s:10:"1268733323";}";
+  reddit: s:55:"a:2:{s:5:"count";s:1:"0";s:4:"time";s:10:"1268733324";}";
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>Hi folks.</p>
+<p>I am recently very fond of the term "code in a tweet" which means that a very useful piece of source code can even fit a Twitter post.  Below here is the shortest javascript that can detect IE browser by <a href="http://webreflection.blogspot.com/2009/01/32-bytes-to-know-if-your-browser-is-ie.html" target="_blank">Andrea</a> (yeah, IE sucks and we have to detect it to eliminate its problems)</p>
+<p>[sourcecode language="jscript"]</p>
+<p>IE='\v'=='v'</p>
+<p>[/sourcecode]</p>
+<p>Moreover, <a href="http://www.thespanner.co.uk/2009/01/29/detecting-browsers-javascript-hacks/" target="_blank">Gareth Heyes</a> has come up with other browser detections and gather them together</p>
+<p>[sourcecode language="jscript"]</p>
+<p>//Firefox detector 2/3 by DoctorDan<br />
+FF=/a/[-1]=='a'<br />
+[/sourcecode]</p>
+<p>[sourcecode language="jscript"]<br />
+//Firefox 3<br />
+FF3=(function x(){})[-5]=='x'<br />
+[/sourcecode]</p>
+<p>[sourcecode language="jscript"]<br />
+//Firefox 2<br />
+FF2=(function x(){})[-6]=='x'<br />
+[/sourcecode]</p>
+<p>[sourcecode language="jscript"]<br />
+//IE detector I posted previously<br />
+IE='\v'=='v'<br />
+[/sourcecode]</p>
+<p>[sourcecode language="jscript"]<br />
+//Safari detector<br />
+Saf=/a/.__proto__=='//'<br />
+[/sourcecode]</p>
+<p>[sourcecode language="jscript"]<br />
+//Chrome<br />
+Chr=/source/.test((/a/.toString+''))<br />
+[/sourcecode]</p>
+<p>[sourcecode language="jscript"]<br />
+//Opera<br />
+Op=/^function \(/.test([].sort)<br />
+[/sourcecode]</p>
+<p>Usage: The variable assignment is the abbreviation of the browser e.g. FF, IE, Op, Saf, Chr which return true or false.</p>
+<p>And this is the most interesting part: one-liner to rule them all<br />
+[sourcecode language="jscript"]<br />
+B=(function x(){})[-5]=='x'?'FF3':(function x(){})[-6]=='x'?'FF2':/a/[-1]=='a'?'FF':'\v'=='v'?'IE':/a/.__proto__=='//'?'Saf':/s/.test(/a/.toString)?'Chr':/^function \(/.test([].sort)?'Op':'Unknown'<br />
+[/sourcecode]<br />
+Usage: B will return a string of the abbreviation of the browser<br />
+Tell me what do you think? And if you find any cool stuff like that let me know.</p>

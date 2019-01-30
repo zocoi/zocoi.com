@@ -1,0 +1,42 @@
+---
+layout: post
+title: Cài đặt LAMP server chỉ với 1 dòng lệnh trên Debian/Ubuntu
+date: 2010-07-26 14:05:11.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Web Development
+tags:
+- apache
+- cài đặt
+- lamp
+- mysql
+- php
+- server
+meta:
+  _edit_last: '2'
+  _syntaxhighlighter_encoded: '1'
+  _sexybookmarks_shortUrl: http://b2l.me/acs63g
+  _wp_old_slug: ''
+  _sexybookmarks_permaHash: 05c080dd4abded156da38b464f6e903b
+  reddit: a:2:{s:5:"count";i:0;s:4:"time";i:1422551426;}
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>Trên Debian/Ubuntu bạn có thể cài đặt Apache, MySQL và PHP chỉ với 1 dòng lệnh "apt-get" nhưng có một vấn đề là không ai có thể nhớ được hết tên các package. Cho dù bạn nhớ hết thì đây có thể là dòng lệnh mà bạn phải gõ:</p>
+<p>[code]<br />
+apt-get install mysql-client mysql-common mysql-server mysql-server php5-mysql php-apc php-db php-pear php5 php5-cli php5-common php5-curl php5-gd php5-imagick php5-mcrypt php5-memcache php5-memcache php5-mysql php5-sqlite php5-suhosin apache2 apache2-doc apache2-mpm-prefork apache2-suexec apache2-utils apache2.2-common libapache2-mod-php5<br />
+[/code]</p>
+<p>Nhưng thật ra có 1 câu lệnh ngắn hơn giúp việc cài đặt LAMP server rất dễ dàng:</p>
+<p>[code]<br />
+apt-get install phpmyadmin<br />
+[/code]</p>
+<p>Gói phpmyadmin yêu cầu bạn phải có những gói cơ bản như apache, php và mysql để có thể cài đặt. Nếu bạn cài phpmyadmin coi như bạn đã có một LAMP server hoàn chỉnh.</p>
+<p>Chúc bạn cài đặt thành công :D</p>

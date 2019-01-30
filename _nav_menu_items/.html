@@ -1,0 +1,66 @@
+---
+layout: nav_menu_item
+title: ''
+date: 
+type: nav_menu_item
+parent_id: '153'
+published: false
+password: ''
+status: draft
+categories: []
+tags: []
+meta:
+  _menu_item_type: post_type
+  _menu_item_menu_item_parent: '0'
+  _menu_item_object_id: '78'
+  _menu_item_object: page
+  _menu_item_target: ''
+  _menu_item_classes: a:1:{i:0;s:0:"";}
+  _menu_item_xfn: ''
+  _menu_item_url: ''
+  _menu_item_orphaned: '1276611357'
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>How to record streaming from digital TV and compress the videos for your mobile phone.</p>
+<p>My task was to create a solution or service that can record a DVB-T channel as video and compress it so that the video can be displayed in a mobile device. All was done in a Linux box and then I can set up a webs server and stream the videos. The solution fulfills my need of recording a piece of morning news and then watching it on the bus or train.</p>
+<p>	Hardwares<br />
+For this experiment, I used an old P4, 512mb RAM Debian box and a Hauppauge WINTV-NOVA-T PCI DVB-T card<br />
+	Having the DVB-T card work properly<br />
+Firstly, I tried to scan for the channel list<br />
+[code]<br />
+scan /usr/share/dvb/dvb-t/fi-Kaupunki &gt; ~/.mplayer/channels.conf<br />
+[/code]<br />
+or<br />
+[sourcecode]<br />
+w_scan &gt;&gt; ~/.mplayer/channels.conf<br />
+[/sourcecode]<br />
+Although I read somewhere on the internet that w_scan is recommended but it seems to me that the channels.conf format returned by w_scan can not be used by other media players like Totem, mplayer or Kaffeine so that I switched back to scan and it worked.<br />
+You can test the adapter data traffic with<br />
+[code]dvbtraffic[/code]<br />
+	Stream/File encoding via mencoder<br />
+mencoder belongs to mplayer package so make sure that you have installed mplayer and have channels.conf in your ~/.mplayer/ folder. The syntax is quite easy</p>
+<p>[code]<br />
+mencoder dvb://${1} -oac copy -ovc copy -of avi -endpos ${2} -o ${FILENAME} -cache 8192 -quiet<br />
+[/code]<br />
+where {1} is the channel name, {2} is the recording duration and {FILENAME} is the path where the video file is saved. For example</p>
+<p>[code]<br />
+mencoder "dvb://Subtv" -oac lavc -ovc lavc -of avi -endpos 00:00:15 -o public_html/test.mpg -cache 8192<br />
+[/code]<br />
+	Rescale and encode the streaming for displaying in mobile device<br />
+[code]<br />
+mencoder "dvb://Subtv" -oac mp3lame -ovc lavc -of avi -endpos 00:01:00 -o public_html/test.mpg -cache 8192 -vf scale=176:144 -ofps 12 -lavcopts acodec=mp2:abitrate=32<br />
+[/code]<br />
+or<br />
+[code]<br />
+mencoder "dvb://Subtv" -oac lavc -lavcopts abitrate=32 -ovc xvid -of avi -endpos 00:01:00 -o public_html/test.mpg -cache 8192 -vf scale=176:144 -ofps 12 -xvidencopts turbo:vhq=0:bitrate=738556 -srate 22050<br />
+[/code]<br />
+Although I used different codecs to bring out different video qualities, I always want to scale it to 176:144 and reduce the numbers of frame to 12 (24 in normal case).</p>
+<p>TODO:</p>
+<p>	Support 3gp and mp4 format<br />
+	Better compression ratio (currently 1min ~= 1mb)<br />
+	Setting up a streaming server using Apache</p>

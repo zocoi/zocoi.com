@@ -1,0 +1,36 @@
+---
+layout: post
+title: Browser bug when position:relative is ignored on table
+date: 2010-03-12 23:29:33.000000000 -08:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Browser Bugs
+tags:
+- Firefox 1.0
+- Firefox 1.5
+- Mozilla 1.1
+- Position
+meta:
+  geo_address: '00180 Helsinki, Suomi'
+  geo_public: '1'
+  _wpas_done_fb: '1'
+  reddit: s:55:"a:2:{s:5:"count";s:1:"0";s:4:"time";s:10:"1268733322";}";
+  geo_accuracy: '162'
+  delicious: a:3:{s:5:"count";s:1:"0";s:9:"post_tags";s:0:"";s:4:"time";s:10:"1312255085";}
+  geo_latitude: '60.166289'
+  geo_longitude: '24.903626'
+  _edit_last: '1393113'
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>Absolutely-positioned children of a relatively-positioned table will be positioned relative to the window, not the table.</p>
+<p>A relatively positioned table with an absolutely positioned element placed inside of it will not calculate the correct position - relative to it's parent - but instead render the absolutely-positioned element in relation to the browser window itself. This does not reproduce when the same absolutely-positioned element is placed inside other relatively-positioned elements such as DIVs, however. Best suggestion, should this be an issue for your design, is to avoid the case entirely.</p>
+<p>This issue originally documented by Peter-Paul Koch at quirksmode.org (<a href="http://www.quirksmode.org/css/mozilla_table.html" target="_blank">Read original article</a>).</p>

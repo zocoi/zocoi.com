@@ -1,0 +1,87 @@
+---
+layout: post
+title: Running parallel test on local and CI
+date: 2014-04-04 22:40:59.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Misc
+- Web Development
+tags: []
+meta:
+  publicize_twitter_url: http://t.co/9obwBLX0Ar
+  _wpas_done_5797353: '1'
+  _wpas_skip_1907398: '1'
+  _wpas_skip_31552: '1'
+  _wpas_skip_5797353: '1'
+  _wp_old_slug: running-parallel-test-for-rails-app
+  _wpas_twitter_publicize_failure: O:13:"Keyring_Error":2:{s:6:"errors";a:1:{s:21:"keyring-request-error";a:1:{i:0;a:5:{s:7:"headers";a:7:{s:16:"content-encoding";s:7:"deflate";s:14:"content-length";s:2:"74";s:12:"content-type";s:31:"application/json;
+    charset=utf-8";s:4:"date";s:29:"Fri, 04 Apr 2014 19:41:07 UTC";s:6:"server";s:3:"tfe";s:10:"set-cookie";s:100:"guest_id=v1%3A139664046745180828;
+    Domain=.twitter.com; Path=/; Expires=Sun, 03-Apr-2016 19:41:07 UTC";s:25:"strict-transport-security";s:17:"max-age=631138519";}s:4:"body";s:61:"{"errors":[{"message":"Invalid
+    or expired token","code":89}]}";s:8:"response";a:2:{s:4:"code";i:401;s:7:"message";s:12:"Unauthorized";}s:7:"cookies";a:1:{i:0;O:14:"WP_Http_Cookie":5:{s:4:"name";s:8:"guest_id";s:5:"value";s:21:"v1:139664046745180828";s:7:"expires";i:1459712467;s:4:"path";s:1:"/";s:6:"domain";s:12:".twitter.com";}}s:8:"filename";N;}}}s:10:"error_data";a:0:{}}
+  publicize_twitter_user: zocoi
+  _publicize_done_external: a:1:{s:8:"facebook";a:1:{i:560224923;b:1;}}
+  _wpas_done_1907398: '1'
+  geo_public: '0'
+  geo_address: '00180 Helsinki, Suomi'
+  geo_latitude: '60.166289'
+  geo_longitude: '24.903626'
+  geo_accuracy: '162'
+  publicize_facebook_url: https://facebook.com/10152413347969924
+  _edit_last: '1393113'
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p><img class="aligncenter" src="{{ site.baseurl }}/assets/parallel_universe.jpg" alt="" width="500" height="538" /></p>
+<p>&nbsp;</p>
+<p>- One problem with long running tests is that team starts to ignore them. It's also a blocker for deployment and a productivity debt for developers to switch context back and forth between builds.</p>
+<p>- Parallelizing tests is the obvious way to make them run significantly faster. Either you are running your test suite locally or remotely on CI servers, there's good chance that you have multi-core machines. So, why's not?</p>
+<p>- Usually your test suites have integration-, API- and UI-level tests. Unit-level tests already run quite fast, so they’re unlikely to be the bottleneck in your builds. Integration and UI level tests are usually the culprits.</p>
+<p>- Running test suite in parallel means spawning multiple instance of the server app. One of the biggest hassles is to bootstrap server app with shared dependencies such as test databases, caching layer (memcache, redis), etc... and those varies with each individual app.</p>
+<p>- In the scope of this article, I'm running a stack including rails sitting on top of MySQL and redis. The test suite are rspec and cucumber</p>
+<p><strong>Tools</strong></p>
+<p>parallel_test gem (https://github.com/grosser/parallel_tests)</p>
+<p>From their README:</p>
+<blockquote><p>Speedup Test::Unit + RSpec + Cucumber by running parallel on multiple CPUs (or cores).<br />
+ParallelTests splits tests into even groups(by number of tests or runtime) and runs each group in a single process with its own database.</p></blockquote>
+<p><strong>Config</strong></p>
+<p>- In your database.yml</p>
+<p>[code]<br />
+test:<br />
+  database: yourproject_test&lt;%= ENV['TEST_ENV_NUMBER'] %&gt;<br />
+[/code]</p>
+<p>- For redis, either we turn it off or add a prefix namespace to the key</p>
+<p>[code]<br />
+    # In config/environments/test.rb<br />
+    config.cache_store = :null_store<br />
+[/code]</p>
+<p>or</p>
+<p>[code]<br />
+    config.cache_store = :redis_store, {<br />
+      :host       =&gt; AppConfig.redis.host,<br />
+      :port       =&gt; AppConfig.redis.port,<br />
+      :password   =&gt; AppConfig.redis.password,<br />
+      :db         =&gt; AppConfig.redis.cache_db,<br />
+      :namespace  =&gt; AppConfig.redis.namespace || ENV['TEST_ENV_NUMBER'],<br />
+    }<br />
+[/code]</p>
+<p>- Running tests is very straight forward</p>
+<p>[code]<br />
+rake parallel:create        # Create additional database<br />
+rake parallel:prepare       # Copy development schema<br />
+rake parallel:spec          # RSpec<br />
+rake parallel:features      # Cucumber<br />
+[/code]</p>
+<p>- On CI, we can also pass the profile name into each test, and serialize the output for better readability.</p>
+<p>[code]<br />
+bin/parallel_cucumber -o &quot;--profile ci&quot; --serialize-stdout features<br />
+bin/parallel_rspec -o &quot;--profile ci&quot; --serialize-stdout spec<br />
+[/code]</p>
+<p>Coming up next: Test perf benchmark</p>

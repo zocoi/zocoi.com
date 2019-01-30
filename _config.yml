@@ -1,0 +1,23 @@
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
+
+# Setup
+title:               Hưng Đào
+tagline:             'Tech, life and thoughts'
+description:         'Hưng Đào homepage and blog about tech, side projects, thoughts and life updates'
+url:                 https://zocoi.com
+baseurl:             ''
+paginate:            5
+
+include             : ["_pages"]
+
+# About/contact
+author:
+  name:              Hung Dao
+  url:               https://zocoi.com/about
+  email:             
+
+# Custom vars
+version:             1.0.0

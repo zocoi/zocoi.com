@@ -1,0 +1,58 @@
+---
+layout: post
+title: Unicode and Encoding in Python
+date: 2010-09-22 12:45:39.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Web Development
+tags:
+- Encoding
+- Python
+- Unicode
+meta:
+  _syntaxhighlighter_encoded: '1'
+  _sexybookmarks_shortUrl: http://b2l.me/ats2bt
+  _wp_old_slug: ''
+  _sexybookmarks_permaHash: 6cbaa241ac1ffaeb9d6c454500875fdf
+  _edit_last: '2'
+  reddit: a:2:{s:5:"count";i:0;s:4:"time";i:1422553746;}
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>I used to have many errors in Unicode and encoding in Python due to that I underestimated it. Unicode and encoding are very basic concepts to understand, but handling without care might give unexpected errors. There are chances that converting from a byte stream object to Unicode object will give error. For example</p>
+<p>[code]<br />
+s = &quot;Thank you pälä&quot;<br />
+u = unicode(s)<br />
+[/code]</p>
+<p>The first line assigns the byte stream containing the character 'T', 'h' ..etc.. to the variable s. The next line will convert it to the Unicode object. However, the second will give you an exception due to that the default encoding in Python is ascii. Python will try to convert the byte stream data to Unicode string using ascii encoding, but the character ä which is encoded as 2 bytes 00 and E4 which is out of the range of first 128 characters (ascii codec can only process the first 128 characters in the ascii character map)</p>
+<p><!--more--></p>
+<p>You might notice that the second line give no error with some other strings. In fact, that is when the byte stream data does not contain any Unicode character out of the range of the first 128 characters and because ascii characters set is a subset of Unicode, they are same for the first 128 characters.</p>
+<p>To overcome the problem in converting the byte stream data to Unicode string. We must know the encoding of the string. There are certain cases that we cannot know the encoding in advance, the resolution is to guess it by trying various known and popular encodings such as ascii, UTF-8 and UTF-16 .etc… Assume we know the string is encoded in UTF-8, the second line can change to</p>
+<p>[code]<br />
+u = unicode(s, 'utf-8')<br />
+[/code]</p>
+<p>That is the case of converting byte stream to Unicode, how about the opposite case? Look following example</p>
+<p>[code]<br />
+u = &quot;Hello pälä&quot;<br />
+f = open(“file.txt”, “w”)<br />
+f.write(u)<br />
+[/code]</p>
+<p>This will give an exception in the third line</p>
+<p>[code]<br />
+UnicodeEncodeError: ‘ascii’ codec can’t encode character u’\xe4′ in position 7: ordinal not in range(128)<br />
+[/code]</p>
+<p>The reason is the same, when writing to file, sockets or some other media. It requires the byte stream object, the object contains byte by byte, not the Unicode string. Unicode string is a special object handled internally by Python, other media cannot understand it. Hence, before writing to file or sending data to the socket, Python will convert the Unicode string to the byte stream and guess what, it will use default encoding ascii to convert it. And since character ä is not in the range of 128 first characters, the result is that it will throw an exception error.</p>
+<p>To overcome this problem, we must know the required encoding of the media we are going to deal with. Does the file require utf-8 encoded byte stream? There are many other encodings around contain the ä but the utf-8 is the most popular one. So the correct third line is</p>
+<p>[code]<br />
+f.write(u.encode(‘utf-8’))<br />
+[/code]</p>
+<p><strong>Conclusion</strong><br />
+Unicode is a industry standard of characters set used in various applications worldwide. Encoding on the other hand is how data is stored in the disk file. When data is moved around different environment or media, such as from the client browser, web server, socket and database. The data is encoded to byte stream and decoded to Unicode string to process many times. Each media might requires different representation of the data to process. So pay attention to the encoding of the data, process it properly. The cost is much more when encoding is handled improperly, data lost, bug introduced, crashed .etc… The choice is yours :D</p>

@@ -1,0 +1,35 @@
+---
+layout: post
+title: Some tips to improve the performance of a web app
+date: 2008-04-15 21:22:27.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Web Development
+tags:
+- web
+meta:
+  _edit_last: '1393113'
+  delicious: s:69:"a:3:{s:5:"count";i:0;s:9:"post_tags";s:0:"";s:4:"time";i:1218488873;}";
+  reddit: s:46:"a:2:{s:5:"count";i:0;s:4:"time";i:1218488875;}";
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>Before writing anything about this, I would like to apologize Odin Chen because I did not fulfill my exaggeration that I will make my web app run 500 times faster than before. After the most recent benchmark, it probably runs only 10 times faster :P</p>
+<p>Here is the list I have applied to my app, hope it helps someone</p>
+<ul>
+<li>Compress web files such as javascript and css files, that saves both web traffic and loading time.</li>
+<li>Add an expires header to web files and images, it is only necessary when those  files are not changed before they expire (I am still finding the best way to do it)</li>
+<li>Choose a small footprint server, I know Ubuntu 7.10 is great but you do not need the latest PHP 5.2.5, why dont you consider Debian?</li>
+<li>Compile your own package with your own configuration, or at least install only the essential packages from the repos, not all of them :P</li>
+<li>Use a caching engine such as APC, eAccelerator, Zend Optimizer, or memcached ...</li>
+<li>Use your skill in programming, yes by that I mean code efficiency : do not forget to join foreign table, that saves many time in database querying, and unset the variables or objects that used in actions file that are no longer needed in template file</li>
+</ul>
+<p>In the future, if I read or think of some other tips I will blog about it, if you have any advice, do not hesitate do leave a comment here. :D</p>

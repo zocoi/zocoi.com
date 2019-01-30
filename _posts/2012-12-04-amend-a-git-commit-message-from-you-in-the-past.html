@@ -1,0 +1,73 @@
+---
+layout: post
+title: Amend a git commit message from you in the past
+date: 2012-12-04 21:50:20.000000000 -08:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Web Development
+tags: []
+meta:
+  _edit_last: '1393113'
+  _publicize_pending: '1'
+  _publicize_done_external: a:1:{s:8:"facebook";a:1:{i:560224923;b:1;}}
+  _wpas_done_1907398: '1'
+  geo_latitude: '37.777841'
+  geo_longitude: "-122.422727"
+  geo_accuracy: '31'
+  geo_address: 351 Grove St, San Francisco, CA 94102, USA
+  geo_public: '1'
+  publicize_twitter_user: zocoi
+  _wpas_done_31552: '1'
+  publicize_reach: a:3:{s:7:"twitter";a:1:{i:31552;i:50;}s:2:"fb";a:1:{i:1907398;i:258;}s:2:"wp";a:1:{i:0;i:2;}}
+  _wpas_skip_1907398: '1'
+  _wpas_skip_31552: '1'
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>Today my feature branch could not be merged to master because one my commit message did not meet the merging requirements. This is how I dived into a haystack, found the commit, rebased and upated it.</p>
+<p>First, let's find all the commits made by me 2 days ago</p>
+<p>[code]<br />
+git log --since=2.days --author=hung<br />
+[/code]</p>
+<p>[code]<br />
+commit 5e18ea5bd6b92d2382a545b07e3495c693fa6293<br />
+Author: Hung Dao<br />
+Date: Fri Nov 16 12:15:55 2012 -0800</p>
+<p>sample commit message 1</p>
+<p>commit d3727aafbadbd7befde0dd497afec3427f0bf151</p>
+<p>Author: Hung Dao<br />
+Date: Mon Dec 3 12:57:12 2012 -0800</p>
+<p>sample commit message 2</p>
+<p>...<br />
+[/code]</p>
+<p>Git doesn’t have a tool to modify history, so in order to modify a commit that is farther back in my history, there is the rebase tool to rebase a series of commits onto the HEAD. I must also define how far I want to go back and rewrite history. For this case, I want to go 1 step further than the culprit commit</p>
+<p>[code]<br />
+git rebase -i d3727aaf~1</p>
+<p>edit d3727aa change the commit message<br />
+pick ....</p>
+<p># Rebase dcfa286..5e18ea5 onto dcfa286<br />
+#<br />
+# Commands:<br />
+#  p, pick = use commit<br />
+#  e, edit = use commit, but stop for amending<br />
+#  s, squash = use commit, but meld into previous commit<br />
+#<br />
+# If you remove a line here THAT COMMIT WILL BE LOST.<br />
+# However, if you remove everything, the rebase will be aborted.<br />
+#</p>
+<p>Successfully rebased and updated ...<br />
+[/code]</p>
+<p>Since the commits are listed in oposite order compared to chronological order I see in `git log`, the commit I want to change should be the first one. After rebasing, let's run `git log` one more time to confirm the change was there.</p>
+<p>[code]<br />
+git log --since=2.days --author=hung<br />
+[/code]</p>
+<p>And voilà! </p>
+<p>Warning: Since it was only me who's working on the branch so I can do `git push --force origin `. It is strongly recommended not to rewrite history of a collaborative branch or repo since it may throw away other people's commits. </p>

@@ -1,0 +1,28 @@
+---
+layout: post
+title: 'PHP Warning: Module ''json'' already loaded in Unknown on line 0'
+date: 2008-03-23 20:24:05.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Web Development
+tags: []
+meta:
+  delicious: s:69:"a:3:{s:5:"count";i:0;s:9:"post_tags";s:0:"";s:4:"time";i:1218488885;}";
+  reddit: s:46:"a:2:{s:5:"count";i:0;s:4:"time";i:1218488887;}";
+  _edit_last: '1393113'
+author:
+  login: mephis1987
+  email: mephis1987@gmail.com
+  display_name: Hung Dao
+  first_name: ''
+  last_name: ''
+---
+<p>After installing a LAMP server on an old P3 800MHz machine - yes it is so old that it was picked up from my apartment storage room, I typed "php -v" and it says in the first line :<br />
+<blockquote>PHP Warning:  Module 'json' already loaded in Unknown on line 0</p></blockquote>
+<p>It seems to be the modules json is loaded twice, I looked into the php.ini files and there it is:<br />
+<blockquote>extension=json.so</p></blockquote>
+<p>Simply commenting out that line solves the problem and yet leaves me the doubt where is it first loaded besides the time php.ini calls it. I guess there is something with the php5-json package I installed, it may already be included in php5 library and automatically loaded. That is not bad at all since the Debian team will maintain that package and give me the latest one. :D</p>
