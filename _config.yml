@@ -4,9 +4,9 @@
 permalink:           pretty
 
 # Setup
-title:               Hưng Đào
-tagline:             'Tech, life and thoughts'
-description:         'Hưng Đào homepage and blog about tech, side projects, thoughts and life updates'
+title:               "Zocoi"
+tagline:             "Vietnamese /ʒoʊ kɔɪ/: (informal) Let's watch/read together"
+description:         "Hưng Đào's thoughts on life and tech" # 'Hưng Đào homepage and blog about tech, side projects, thoughts and life updates'
 url:                 https://zocoi.com
 baseurl:             ''
 paginate:            10
