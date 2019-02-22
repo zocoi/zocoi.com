@@ -1,14 +1,12 @@
 # Permalinks
-#
-# Use of `relative_permalinks` ensures post links from the index work properly.
-permalink:           pretty
+permalink:           '/:year/:month/:day/:title'
+future: true
 
 # Setup
 title:               "Zocoi"
 tagline:             "Vietnamese /ʒoʊ kɔɪ/: (informal) Let's watch/read together"
 description:         "Hưng Đào's thoughts on life and tech" # 'Hưng Đào homepage and blog about tech, side projects, thoughts and life updates'
 url:                 https://zocoi.com
-baseurl:             ''
 paginate:            10
 
 include             : ["_pages"]
@@ -20,4 +18,4 @@ author:
   email:             
 
 # Custom vars
-version:             1.0.0
+version:             1.0.1
