@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: zocoi.com
+Token: 8607796a6702c37541f8227db99c8d1a677c9710dccffe2c11112c87cc2e141c
