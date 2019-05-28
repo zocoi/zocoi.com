@@ -33,7 +33,7 @@ GEM
       jekyll (~> 3.3)
       sinatra (~> 1.4)
       sinatra-contrib (~> 1.4)
-    jekyll-feed (0.12.0)
+    jekyll-feed (0.12.1)
       jekyll (>= 3.7, < 5.0)
     jekyll-paginate (1.1.0)
     jekyll-sass-converter (1.5.2)
