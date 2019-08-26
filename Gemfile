@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby '2.6.2'
+ruby '2.6.3'
 
 # Hello! This is where you manage which Jekyll version is used to run.
 # When you want to use a different version, change it below, save the
@@ -10,7 +10,7 @@ ruby '2.6.2'
 #
 # This will help ensure the proper Jekyll version is running.
 # Happy Jekylling!
-gem "jekyll", "~> 3.8.6"
+gem "jekyll", "~> 4"
 
 # This is the default theme for new Jekyll sites. You may change this to anything you like.
 # gem "minima", "~> 2.0"
@@ -24,7 +24,7 @@ group :jekyll_plugins do
   gem "jekyll-seo-tag"
   gem "jekyll-sitemap"
   gem "jekyll-paginate"
-  gem 'jekyll-admin'
+  # gem 'jekyll-admin'
   gem "jekyll-feed", "~> 0.6"
 end
 
@@ -33,4 +33,3 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Performance-booster for watching directories on Windows
 gem "wdm", "~> 0.1.0" if Gem.win_platform?
-
