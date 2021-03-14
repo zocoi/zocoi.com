@@ -35,9 +35,10 @@ author:
   last_name: ''
 ---
 
-<p>I don't use Launchpad as often since the new Spotlight search is fast and convenient. But I would love to have an organized launchpad. Here is the easiest way to reset it to default settings.</p>
-<p>Run this in Terminal:</p>
+I don't use Launchpad as often since the new Spotlight search is fast and convenient. But I would love to have an organized launchpad. Here is the easiest way to reset it to default settings.
 
-{% highlight shell %}
+Run this in Terminal:
+
+```
 defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock
-{% endhighlight %}
+```
